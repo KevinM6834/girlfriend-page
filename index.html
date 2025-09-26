@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/tone@14.7.58/build/Tone.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
         body {
@@ -68,72 +67,72 @@
                  alt="Another placeholder" class="w-full h-full object-cover">
         </div>
 
-        <!-- Interactive heart button and music button -->
+        <!-- Interactive poem section -->
+        <div class="mt-8 text-center bg-pink-100 p-6 rounded-2xl shadow-inner">
+            <h2 class="text-2xl font-bold text-pink-500 mb-4">A Poem For You</h2>
+            <div id="poemContainer" class="text-gray-700 text-lg italic leading-relaxed mb-4"></div>
+            <button id="nextPoemBtn" class="bg-purple-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300">
+                Next Poem
+            </button>
+        </div>
+
+        <!-- Interactive heart button -->
         <div class="flex items-center justify-center space-x-4 mt-6">
             <button id="heartBtn" class="heart-button bg-pink-500 text-white rounded-full p-4 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 115.656 5.656L10 17.656l1.172-1.172a4 4 0 115.656-5.656A4 4 0 0110 5.172a4 4 0 01-6.828 0z" clip-rule="evenodd" />
                 </svg>
             </button>
-            <button id="musicBtn" class="bg-purple-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300">
-                Play a Melody
-            </button>
         </div>
 
     </div>
 
     <script>
-        // Get the heart button element
+        // Heart button logic
         const heartButton = document.getElementById('heartBtn');
-
-        // Add a click event listener to the heart button
         heartButton.addEventListener('click', () => {
-            // Toggle the 'clicked' class to trigger the animation
             heartButton.classList.toggle('clicked');
-
-            // Wait for the animation to complete and then remove the class
             setTimeout(() => {
                 heartButton.classList.remove('clicked');
-            }, 600); // The timeout duration should match the animation duration
+            }, 600);
         });
 
-        // Get the music button element
-        const musicButton = document.getElementById('musicBtn');
-        let synth;
-        let melodyStarted = false;
+        // Poem section logic
+        const poems = [
+            `My love for you is like a song,
+            It fills the air where you belong.
+            A melody gentle, and ever so sweet,
+            In every heartbeat, a joyful beat.`,
+            `The stars above, they pale and fade,
+            Against the light that you have made.
+            A universe in your eyes I see,
+            My one and only, eternally.`,
+            `A touch, a glance, a whispered word,
+            The sweetest sounds I've ever heard.
+            With you, my world is bright and true,
+            Forever and always, I'll love you.`
+        ];
 
-        // Create the melody
-        const melody = new Tone.Sequence((time, note) => {
-            // Check if synth exists before playing note
-            if (synth) {
-                synth.triggerAttackRelease(note, "8n", time);
-            }
-        }, ["C4", "E4", "G4", "A4", "G4", "E4", "C4"]);
+        let currentPoemIndex = 0;
+        const poemContainer = document.getElementById('poemContainer');
+        const nextPoemBtn = document.getElementById('nextPoemBtn');
 
-        // Add a click event listener to the music button
-        musicButton.addEventListener('click', async () => {
-            if (!melodyStarted) {
-                // Ensure Tone.js is ready before starting the audio
-                await Tone.start();
-                console.log('Audio context started');
+        // Function to display the current poem
+        function displayPoem() {
+            poemContainer.textContent = poems[currentPoemIndex];
+        }
 
-                // Create a synth
-                synth = new Tone.Synth().toDestination();
-
-                // Start the melody
-                melody.start();
-                Tone.Transport.start();
-                melodyStarted = true;
-                musicButton.textContent = "Playing...";
-            } else {
-                // Stop the melody and transport
-                Tone.Transport.stop();
-                melody.stop();
-                melodyStarted = false;
-                musicButton.textContent = "Play a Melody";
-            }
+        // Add a click event listener to the "Next Poem" button
+        nextPoemBtn.addEventListener('click', () => {
+            currentPoemIndex = (currentPoemIndex + 1) % poems.length;
+            displayPoem();
         });
+
+        // Display the first poem when the page loads
+        document.addEventListener('DOMContentLoaded', displayPoem);
+
     </script>
 
 </body>
 </html>
+
