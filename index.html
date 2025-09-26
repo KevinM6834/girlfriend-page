@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/tone@14.7.58/build/Tone.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
         body {
@@ -51,12 +51,34 @@
             You light up my life in so many ways. Your smile, your kindness, and your laughter are my favorite things in the world. I am so incredibly lucky to have you.
         </p>
 
-        <!-- Interactive heart button -->
-        <button id="heartBtn" class="heart-button bg-pink-500 text-white rounded-full p-4 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 115.656 5.656L10 17.656l1.172-1.172a4 4 0 115.656-5.656A4 4 0 0110 5.172a4 4 0 01-6.828 0z" clip-rule="evenodd" />
-            </svg>
-        </button>
+        <!-- A new section for a personalized list -->
+        <div class="mt-8 text-left">
+            <h2 class="text-2xl font-bold text-pink-500 mb-4">A Few Reasons Why I Love You:</h2>
+            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                <li>Your incredible sense of humor.</li>
+                <li>How you always know how to cheer me up.</li>
+                <li>Your passion for [insert a hobby or interest here].</li>
+                <li>[Add another reason here]</li>
+            </ul>
+        </div>
+
+        <!-- Another placeholder for a different picture -->
+        <div class="w-full h-48 rounded-xl overflow-hidden my-6 shadow-md border-4 border-pink-200">
+            <img src="https://placehold.co/400x400/e9d5ff/6b7280?text=Another+Picture+Here"
+                 alt="Another placeholder" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Interactive heart button and music button -->
+        <div class="flex items-center justify-center space-x-4 mt-6">
+            <button id="heartBtn" class="heart-button bg-pink-500 text-white rounded-full p-4 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 115.656 5.656L10 17.656l1.172-1.172a4 4 0 115.656-5.656A4 4 0 0110 5.172a4 4 0 01-6.828 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button id="musicBtn" class="bg-purple-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300">
+                Play a Melody
+            </button>
+        </div>
 
     </div>
 
@@ -64,7 +86,7 @@
         // Get the heart button element
         const heartButton = document.getElementById('heartBtn');
 
-        // Add a click event listener to the button
+        // Add a click event listener to the heart button
         heartButton.addEventListener('click', () => {
             // Toggle the 'clicked' class to trigger the animation
             heartButton.classList.toggle('clicked');
@@ -73,6 +95,43 @@
             setTimeout(() => {
                 heartButton.classList.remove('clicked');
             }, 600); // The timeout duration should match the animation duration
+        });
+
+        // Get the music button element
+        const musicButton = document.getElementById('musicBtn');
+        let synth;
+        let melodyStarted = false;
+
+        // Create the melody
+        const melody = new Tone.Sequence((time, note) => {
+            // Check if synth exists before playing note
+            if (synth) {
+                synth.triggerAttackRelease(note, "8n", time);
+            }
+        }, ["C4", "E4", "G4", "A4", "G4", "E4", "C4"]);
+
+        // Add a click event listener to the music button
+        musicButton.addEventListener('click', async () => {
+            if (!melodyStarted) {
+                // Ensure Tone.js is ready before starting the audio
+                await Tone.start();
+                console.log('Audio context started');
+
+                // Create a synth
+                synth = new Tone.Synth().toDestination();
+
+                // Start the melody
+                melody.start();
+                Tone.Transport.start();
+                melodyStarted = true;
+                musicButton.textContent = "Playing...";
+            } else {
+                // Stop the melody and transport
+                Tone.Transport.stop();
+                melody.stop();
+                melodyStarted = false;
+                musicButton.textContent = "Play a Melody";
+            }
         });
     </script>
 
