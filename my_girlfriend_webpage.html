@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7e9f3;
+        }
+        .heart-button {
+            transition: transform 0.2s ease-in-out;
+        }
+        .heart-button:hover {
+            transform: scale(1.1);
+        }
+        .heart-button.clicked {
+            animation: pulse 0.6s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Main card container for the webpage content -->
+    <div class="bg-white rounded-3xl shadow-xl overflow-hidden max-w-sm w-full p-8 md:p-10 text-center transform transition-transform duration-500 hover:scale-105">
+
+        <!-- Title and main message -->
+        <h1 class="text-4xl md:text-5xl font-bold text-pink-500 mb-4 animate-bounce">Hello, My Love!</h1>
+        <p class="text-gray-600 text-lg md:text-xl mb-6">
+            Just wanted to create a small corner of the internet to tell you how much you mean to me.
+        </p>
+
+        <!-- Placeholder for a picture of your girlfriend -->
+        <div class="w-full h-64 rounded-xl overflow-hidden mb-6 shadow-md border-4 border-pink-200">
+            <!-- Replace this placeholder image with a real URL to her picture -->
+            <img src="https://placehold.co/400x400/ffe4e1/6b7280?text=Your+Picture+Here" 
+                 alt="Placeholder image" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Customizable message area -->
+        <p class="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
+            You light up my life in so many ways. Your smile, your kindness, and your laughter are my favorite things in the world. I am so incredibly lucky to have you.
+        </p>
+
+        <!-- Interactive heart button -->
+        <button id="heartBtn" class="heart-button bg-pink-500 text-white rounded-full p-4 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 115.656 5.656L10 17.656l1.172-1.172a4 4 0 115.656-5.656A4 4 0 0110 5.172a4 4 0 01-6.828 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+
+    </div>
+
+    <script>
+        // Get the heart button element
+        const heartButton = document.getElementById('heartBtn');
+
+        // Add a click event listener to the button
+        heartButton.addEventListener('click', () => {
+            // Toggle the 'clicked' class to trigger the animation
+            heartButton.classList.toggle('clicked');
+
+            // Wait for the animation to complete and then remove the class
+            setTimeout(() => {
+                heartButton.classList.remove('clicked');
+            }, 600); // The timeout duration should match the animation duration
+        });
+    </script>
+
+</body>
+</html>
